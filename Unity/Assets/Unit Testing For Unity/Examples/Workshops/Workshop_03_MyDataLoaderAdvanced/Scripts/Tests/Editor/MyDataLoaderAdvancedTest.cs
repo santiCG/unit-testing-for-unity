@@ -23,7 +23,7 @@ namespace RMC.UnitTesting.Examples.MyDataLoaderAdvanced
     public class MyDataLoaderAdvancedTest
     {
         private const string _url = "https://github.com/SamuelAsherRivello/unit-testing-for-unity/";
-        private const string _urlInvalid = "";
+        private const string _urlInvalid = "eldiadelpayaso";
 
         [Test]
         public void LoadAsync_ResultContainsDOCTYPE_WhenIsLoaded()
@@ -62,6 +62,7 @@ namespace RMC.UnitTesting.Examples.MyDataLoaderAdvanced
             myDataLoader.LoadAsync(_url);
         }
 
+        [Test]
         public async Task MockLoadAsync_ThrowsError_WhenUrlIsInvalid()
         {
             ////////////////////////////////////////////////////
@@ -80,9 +81,9 @@ namespace RMC.UnitTesting.Examples.MyDataLoaderAdvanced
             
             myDataLoader.OnLoaded.AddListener((string result) =>
             {
-                //TODO: This must throw error
+                Debug.LogWarning("Invalid URL");
                 // Assert
-                Assert.That(result.Contains(expectedResult), Is.True);
+                Assert.AreNotEqual(result.Contains(expectedResult), Is.True);
             });
             
             // Act

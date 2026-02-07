@@ -40,6 +40,16 @@ namespace RMC.UnitTesting.Examples.MyMathSystem
             // Assert
             Assert.That(sum, Is.EqualTo(5));
         }
+
+        [Test]
+        public void Divide_ResultIs2_When10And5()
+        {
+            MyMathSystem myMathSystem = new MyMathSystem();
+            
+            int result = myMathSystem.Divide(10, 5);
+            
+            Assert.That(result, Is.EqualTo(2));
+        }
         
         [Test]
         public void Add_ResultIsCorrect_WhenValues(
@@ -55,7 +65,7 @@ namespace RMC.UnitTesting.Examples.MyMathSystem
             // Assert
             Assert.That(sum, Is.EqualTo(valuesA + valuesB));
         }
-        
+         
         [Test]
         public void Subtract_ResultIsCorrect_WhenValues(
             [ValueSource("ValuesA")] int valuesA, 
@@ -69,6 +79,30 @@ namespace RMC.UnitTesting.Examples.MyMathSystem
             
             // Assert
             Assert.That(sum, Is.EqualTo(valuesA - valuesB));
+        }
+        
+        [Test]
+        public void Divide_ResultIsCorrect_WhenValues(
+            [ValueSource("ValuesA")] int valuesA, 
+            [ValueSource("ValuesB")] int valuesB )
+        {
+            MyMathSystem myMathSystem = new MyMathSystem();
+            
+            int div = myMathSystem.Divide(valuesA, valuesB);
+            
+            Assert.That(div, Is.EqualTo(valuesB != 0 ? valuesA / valuesB : valuesA));
+        }
+        
+        [Test]
+        public void Multiply_ResultIsCorrect_WhenValues(
+            [ValueSource("ValuesA")] int valuesA, 
+            [ValueSource("ValuesB")] int valuesB )
+        {
+            MyMathSystem myMathSystem = new MyMathSystem();
+            
+            int mul = myMathSystem.Multiply(valuesA, valuesB);
+            
+            Assert.That(mul, Is.EqualTo(valuesA * valuesB));
         }
     }
 }

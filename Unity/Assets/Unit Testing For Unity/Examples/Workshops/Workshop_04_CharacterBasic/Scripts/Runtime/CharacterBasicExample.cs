@@ -10,7 +10,7 @@ namespace RMC.UnitTesting.Examples.CharacterBasic
     public class CharacterBasicExample: MonoBehaviour
     {
         [ExcludeFromCodeCoverage]
-        protected void Awake ()
+        protected void Awake()
         {
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
             go.name = "CharacterBasic";

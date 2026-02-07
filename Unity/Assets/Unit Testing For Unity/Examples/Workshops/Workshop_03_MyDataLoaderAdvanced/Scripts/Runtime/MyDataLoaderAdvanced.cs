@@ -52,6 +52,7 @@ namespace RMC.UnitTesting.Examples.MyDataLoaderAdvanced
         {
             if (string.IsNullOrEmpty(url))
             {
+                Debug.LogError("You introduced an Empty URL");
                 throw new ArgumentException();
             }
             Result = string.Empty;
