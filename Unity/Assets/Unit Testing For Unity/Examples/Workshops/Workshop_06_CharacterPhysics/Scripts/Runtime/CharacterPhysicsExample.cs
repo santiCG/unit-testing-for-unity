@@ -14,6 +14,12 @@ namespace RMC.UnitTesting.Examples.CharacterPhysics
         {
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
             go.name = "CharacterPhysics";
+            
+            GameObject boxCollider = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            boxCollider.name = "PhysicsBoxCollider";
+            boxCollider.transform.position = go.transform.position + new Vector3(2, 0, 0);
+            boxCollider.GetComponent<MeshRenderer>().material = new Material(Shader.Find("Unlit/Transparent"));
+            
             CharacterPhysicsMb characterPhysicsMb  = go.AddComponent<CharacterPhysicsMb>();
             CharacterPhysics characterPhysics = new CharacterPhysics(characterPhysicsMb);
 
@@ -23,6 +29,5 @@ namespace RMC.UnitTesting.Examples.CharacterPhysics
             Debug.Log($"Instructions: Move With Arrow Keys");
             Debug.Log($"Result = {result}");
         }
-
     }
 }

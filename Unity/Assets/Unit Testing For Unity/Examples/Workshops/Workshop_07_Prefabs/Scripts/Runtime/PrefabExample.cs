@@ -18,6 +18,5 @@ namespace RMC.UnitTesting.Examples.Prefabs
             Debug.Log($"Instructions: This Scene has no UI. See Unity Console.");
             Debug.Log($"Result = {_enemy.name}");
         }
-
     }
 }

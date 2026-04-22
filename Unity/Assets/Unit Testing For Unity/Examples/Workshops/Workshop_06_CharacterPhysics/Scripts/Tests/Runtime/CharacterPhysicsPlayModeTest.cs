@@ -13,8 +13,10 @@ namespace RMC.UnitTesting.Examples.CharacterPhysics
     public class CharacterPhysicsPlayModeTest
     {
         private GameObject _testGameObject;
+        private GameObject _testCollider;
         private CharacterPhysics _characterPhysics;
         private const float WaitSeconds = 0.5f; 
+        private Vector3 _colliderPosition = new Vector3(2, 0, 0);
 
         /// <summary>
         /// Setup method to initialize the test environment before each test is run
@@ -26,10 +28,14 @@ namespace RMC.UnitTesting.Examples.CharacterPhysics
             _testGameObject.name = "TestGameObject";
             CharacterPhysicsMb characterPhysicsMb  = _testGameObject.AddComponent<CharacterPhysicsMb>();
             _characterPhysics = new CharacterPhysics(characterPhysicsMb);
+            
+            _testCollider = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            _testCollider.name = "PhysicsBoxCollider";
+            _testCollider.transform.position += _colliderPosition;
         }
 
         /// <summary>
-        /// Teardown method to cleanup the test environment after each test has run
+        /// Teardown method to clean up the test environment after each test has run
         /// </summary>
         [TearDown]
         public void TearDown()
@@ -37,7 +43,6 @@ namespace RMC.UnitTesting.Examples.CharacterPhysics
             Object.DestroyImmediate(_testGameObject);
             _testGameObject = null;
             _characterPhysics = null;
-            
         }
 
         /// <summary>
@@ -104,6 +109,23 @@ namespace RMC.UnitTesting.Examples.CharacterPhysics
             
             // Assert
             Assert.AreEqual(newPosition, result);
+        }
+        
+        /// <summary>
+        /// Test to check if the character collides as expected
+        /// </summary>
+        [UnityTest]
+        public IEnumerator CollideDetection_WhenMovingRight()
+        {
+            // Act
+            _testGameObject.transform.Translate(_colliderPosition);
+            
+            // Await
+            yield return new WaitForSeconds(WaitSeconds);
+            bool result = _characterPhysics._characterPhysicsMb.WasHit;
+            
+            // Assert
+            Assert.AreEqual(true, result);
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using NUnit.Framework;
+using RMC.UnitTesting.Examples.Prefabs;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine;
@@ -24,6 +25,7 @@ namespace RMC.UnitTesting.Examples.Scenes
         {
             $"Assets/Unit Testing For Unity/Examples/Workshops/Workshop_08_Scenes/Scenes/{SceneLoadingPlayModeTest.Scene01_Intro}.unity",
             $"Assets/Unit Testing For Unity/Examples/Workshops/Workshop_08_Scenes/Scenes/{SceneLoadingPlayModeTest.Scene02_Game}.unity",
+            $"Assets/Unit Testing For Unity/Examples/Workshops/Workshop_08_Scenes/Scenes/{SceneLoadingPlayModeTest.Scene03_House}.unity",
         };
 
         public void Setup()
@@ -49,6 +51,7 @@ namespace RMC.UnitTesting.Examples.Scenes
         private bool _isSceneLoaded = false;
         public static readonly string Scene01_Intro = "Scene01_Intro";
         public static readonly string Scene02_Game = "Scene02_Game";
+        public static readonly string Scene03_House = "Scene03_House";
 
         /// <summary>
         /// Setup method to initialize the test environment before each test is run
@@ -150,6 +153,25 @@ namespace RMC.UnitTesting.Examples.Scenes
             });
 
             yield return null;
+        }
+        
+        [UnityTest]
+        public IEnumerator Scene03_House__HouseIsNotNull__WhenSceneLoaded()
+        {
+            // Arrange
+            SceneManager.sceneLoaded += (scene, mode) => { _isSceneLoaded = true; };
+            SceneManager.LoadScene(Scene03_House, LoadSceneMode.Single);
+
+            // Await
+            yield return new WaitWhile(() => !_isSceneLoaded);
+
+            // Act
+            House house = Resources.FindObjectsOfTypeAll<House>().FirstOrDefault();
+
+            // Await
+
+            // Assert
+            Assert.That(house, Is.Not.Null);
         }
     }
 }

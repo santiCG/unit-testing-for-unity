@@ -106,5 +106,23 @@ namespace RMC.UnitTesting.Examples.CharacterBasic
             // Assert
             Assert.AreEqual(expectedPosition, returnedPosition);
         }
+
+        /// <summary>
+        /// Test to check if the character moves by a specific offset correctly
+        /// </summary>
+        [Test]
+        public void RotateBy_Result0_0_0_WhenInput45Degrees()
+        {
+            float angleDegrees = 45f;
+            Vector3 initialRotation = _testGameObject.transform.eulerAngles;
+            Vector3 expectedRotation = initialRotation + new Vector3(0f, angleDegrees, 0f);
+            
+            // Act
+            Vector3 returnedRotation = _characterBasic.RotateBy(angleDegrees);
+            
+            // Assert
+            // There is a little margin error, where the angle is not exactly the same by a very small amount
+            Assert.AreEqual(expectedRotation[1], Mathf.Round(returnedRotation[1]));
+        }
     }
 }

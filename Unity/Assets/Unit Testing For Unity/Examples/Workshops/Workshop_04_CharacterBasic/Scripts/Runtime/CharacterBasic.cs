@@ -1,5 +1,7 @@
 
+using TreeEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace RMC.UnitTesting.Examples.CharacterBasic
 {
@@ -22,10 +24,17 @@ namespace RMC.UnitTesting.Examples.CharacterBasic
             Up,
             Down
         }
+
+        public enum RotateType
+        {
+            Left,
+            Right
+        }
         
         protected void Update()
         {
             MoveByInput();
+            RotateByInput();
         }
         
         public void MoveByInput()
@@ -52,26 +61,57 @@ namespace RMC.UnitTesting.Examples.CharacterBasic
             }
         }
 
+        public void RotateByInput()
+        {
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                RotateByKeyCode(RotateType.Left);
+            }
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                RotateByKeyCode(RotateType.Right);
+            }
+        }
+
         public Vector3 MoveByKeyCode(MoveType moveType)
         {
-            if (moveType == MoveType.Left)
+            switch (moveType)
             {
-                MoveBy(new Vector3(-_speed, 0, 0));
-            }
-            if (moveType == MoveType.Right)
-            {
-                MoveBy(new Vector3(_speed, 0, 0));
-            }
-            if (moveType == MoveType.Up)
-            {
-                MoveBy(new Vector3(0,  _speed, 0));
-            }
-            if (moveType == MoveType.Down)
-            {
-                MoveBy(new Vector3(0,  -_speed, 0));
+                case MoveType.Left:
+                    MoveBy(new Vector3(-_speed, 0, 0));
+                    break;
+                case MoveType.Right:
+                    MoveBy(new Vector3(_speed, 0, 0));
+                    break;
+                case MoveType.Up:
+                    MoveBy(new Vector3(0, _speed, 0));
+                    break;
+                case MoveType.Down:
+                    MoveBy(new Vector3(0,  -_speed, 0));
+                    break;
+                default:
+                    break;
             }
 
             return transform.position;
+        }
+
+        public Vector3 RotateByKeyCode(RotateType rotateType)
+        {
+            switch (rotateType)
+            {
+                case RotateType.Left:
+                    RotateBy(20);
+                    break;
+                case RotateType.Right:
+                    RotateBy(-20);
+                    break;
+                default:
+                    break;
+            }
+            
+            return transform.rotation.eulerAngles;
         }
         
         public Vector3 MoveTo (Vector3 position)
@@ -82,8 +122,14 @@ namespace RMC.UnitTesting.Examples.CharacterBasic
 
         public Vector3 MoveBy (Vector3 position)
         {
-            transform.position = transform.position + position;
+            transform.position += position;
             return transform.position;
+        }
+
+        public Vector3 RotateBy(float degrees)
+        {
+            transform.Rotate(Vector3.up, degrees);
+            return transform.rotation.eulerAngles;
         }
     }
 }

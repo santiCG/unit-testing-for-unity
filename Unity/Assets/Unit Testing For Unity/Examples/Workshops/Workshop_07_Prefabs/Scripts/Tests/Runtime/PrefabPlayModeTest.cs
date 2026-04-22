@@ -14,8 +14,11 @@ namespace RMC.UnitTesting.Examples.Prefabs
         private const float DelayForSetupTime = 0.5f;
         private const string EnemyPrefabPath = 
             "Assets/Unit Testing For Unity/Examples/Workshops/Workshop_07_Prefabs/Scripts/Prefabs/Enemy.prefab";
+        private const string HousePrefabPath = 
+            "Assets/Unit Testing For Unity/Examples/Workshops/Workshop_07_Prefabs/Scripts/Prefabs/House.prefab";
 
         private Enemy _enemy;
+        private House _house;
 
         /// <summary>
         /// Setup method to initialize the test environment before each test is run
@@ -27,8 +30,13 @@ namespace RMC.UnitTesting.Examples.Prefabs
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(EnemyPrefabPath);
             
             // Instantiate the prefab
-            GameObject go = GameObject.Instantiate(prefab, new Vector3(0, 0, 10), new Quaternion(0, 180, 0, 0));
-            _enemy = go.GetComponent<Enemy>();
+            _enemy = GameObject.Instantiate(prefab, new Vector3(0, 0, 10), new Quaternion(0, 180, 0, 0)).GetComponent<Enemy>();
+            
+            // Load a prefab (by giving it the path to an existing prefab).
+            var prefab2 = AssetDatabase.LoadAssetAtPath<GameObject>(HousePrefabPath);
+            
+            // Instantiate the prefab
+            _house = GameObject.Instantiate(prefab2, new Vector3(0, 0, 10), new Quaternion(0, 180, 0, 0)).GetComponent<House>();
             
             // Wait for three seconds (Arbitrary time for prefab to set up itself).
             while (Time.realtimeSinceStartup < DelayForSetupTime)
@@ -37,23 +45,23 @@ namespace RMC.UnitTesting.Examples.Prefabs
             }
         }
 
-     
-
         /// <summary>
-        /// Teardown method to cleanup the test environment after each test has run
+        /// Teardown method to clean up the test environment after each test has run
         /// </summary>
         [TearDown]
         public void TearDown()
         {
-            if (_enemy != null)
+            if (_enemy != null || _house != null)
             {
                 Object.DestroyImmediate(_enemy.gameObject);
+                Object.DestroyImmediate(_house.gameObject);
                 _enemy = null;
+                _house = null;
             }
         }
 
         [Test]
-        public void Enemy_EnemyIsNotNull_WhenPrefabInstantiated()
+        public void PrefabsAreNotNull_WhenPrefabInstantiated()
         {
             // Arrange
     
@@ -61,11 +69,11 @@ namespace RMC.UnitTesting.Examples.Prefabs
 
             // Assert
             Assert.That(_enemy, Is.Not.Null);
- 
+            Assert.That(_house, Is.Not.Null);
         }
         
         [Test]
-        public void Enemy_GameObjectIsNotNull_WhenPrefabInstantiated()
+        public void PrefabsGameObjsAreNotNull_WhenPrefabInstantiated()
         {
             // Arrange
     
@@ -73,10 +81,11 @@ namespace RMC.UnitTesting.Examples.Prefabs
 
             // Assert
             Assert.That(_enemy.gameObject, Is.Not.Null);
+            Assert.That(_house.gameObject, Is.Not.Null);
         }
         
         [Test]
-        public void Enemy_RigidBodyIsNotNull_WhenPrefabInstantiated()
+        public void PrefabsRigidbodiesAreNotNull_WhenPrefabInstantiated()
         {
             // Arrange
     
@@ -84,6 +93,7 @@ namespace RMC.UnitTesting.Examples.Prefabs
 
             // Assert
             Assert.That(_enemy.Rigidbody, Is.Not.Null);
+            Assert.That(_house.Rigidbody, Is.Not.Null);
         }
 
     }

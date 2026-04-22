@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace RMC.UnitTesting.Examples.CharacterPhysics
@@ -15,6 +16,8 @@ namespace RMC.UnitTesting.Examples.CharacterPhysics
 
         private Rigidbody _rigidbody;
         public CharacterPhysics CharacterPhysics { set; get; }
+
+        public bool WasHit { private set; get; }
 
         private void Awake()
         {
@@ -35,19 +38,32 @@ namespace RMC.UnitTesting.Examples.CharacterPhysics
         {
             CharacterPhysics.MoveByInput();
         }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            WasHit = true;
+            Debug.Log("Collision with: " + other.gameObject.name);
+        }
     }
 
-   /// <summary>
-   /// This class will be easier to test and does not depend on MonoBehaviour
-   /// </summary>
+    /// <summary>
+    /// This class will be easier to test and does not depend on MonoBehaviour
+    /// </summary>
     public class CharacterPhysics
     {
-        public float Speed { get { return _speed;}}
-        public Vector3 Position { get { return _characterPhysicsMb.transform.position;} }
+        public float Speed
+        {
+            get { return _speed; }
+        }
+
+        public Vector3 Position
+        {
+            get { return _characterPhysicsMb.transform.position; }
+        }
 
         private const float _speed = 50f;
 
-        private CharacterPhysicsMb _characterPhysicsMb;
+        public CharacterPhysicsMb _characterPhysicsMb {get; set;}
 
         public CharacterPhysics(CharacterPhysicsMb characterPhysicsMb)
         {
